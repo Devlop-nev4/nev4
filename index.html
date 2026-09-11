@@ -1,0 +1,2224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEV4 — Learn to Code</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #07090d;
+    --panel: #0d1118;
+    --border: #202938;
+    --text: #f4f7fb;
+    --muted: #8993a4;
+    --green: #49d17d;
+    --red: #ff5361;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 50% -20%, #17202f 0%, transparent 45%),
+        var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6%;
+    background: rgba(7, 9, 13, .88);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: 4px;
+}
+
+nav {
+    display: flex;
+    gap: 6px;
+}
+
+nav button {
+    background: transparent;
+    border: 0;
+    color: var(--muted);
+    padding: 10px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+nav button:hover,
+nav button.active {
+    background: #151b25;
+    color: white;
+}
+
+.profile-btn {
+    border: 1px solid var(--border);
+    background: #10151e;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.page {
+    display: none;
+    min-height: calc(100vh - 72px);
+}
+
+.page.active {
+    display: block;
+}
+
+.container {
+    width: min(1150px, 90%);
+    margin: auto;
+}
+
+.hero {
+    min-height: 620px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero-content {
+    max-width: 800px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 8px 13px;
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 25px;
+    background: rgba(255,255,255,.025);
+}
+
+h1 {
+    font-size: clamp(48px, 8vw, 92px);
+    line-height: .95;
+    letter-spacing: -5px;
+    margin-bottom: 25px;
+}
+
+.gradient {
+    color: #858e9e;
+}
+
+.hero p {
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.7;
+    max-width: 650px;
+    margin: auto;
+}
+
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 35px;
+}
+
+.btn {
+    border: 1px solid var(--border);
+    background: white;
+    color: #050608;
+    padding: 13px 22px;
+    border-radius: 9px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn.secondary {
+    background: #10151e;
+    color: white;
+}
+
+.btn.danger {
+    background: #241116;
+    color: #ff7b84;
+    border-color: #4b2028;
+}
+
+section {
+    padding: 80px 0;
+}
+
+.section-title {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.section-subtitle {
+    color: var(--muted);
+    margin-bottom: 35px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.card {
+    background: linear-gradient(145deg, #10151e, #0b0f15);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 25px;
+    min-height: 180px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: #3a4558;
+}
+
+.card-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #181e28;
+    margin-bottom: 22px;
+    font-weight: 800;
+}
+
+.card h3 {
+    margin-bottom: 8px;
+}
+
+.card p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* LEÇONS */
+
+.lesson-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 25px;
+    padding-top: 50px;
+}
+
+.sidebar {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 15px;
+    height: fit-content;
+    position: sticky;
+    top: 95px;
+}
+
+.lesson-btn {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    text-align: left;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 3px;
+}
+
+.lesson-btn:hover,
+.lesson-btn.selected {
+    background: #171e29;
+    color: white;
+}
+
+.published-title {
+    color: var(--green);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 20px 10px 10px;
+}
+
+.lesson-content {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 35px;
+    min-height: 600px;
+}
+
+.lesson-number {
+    color: var(--green);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.lesson-content h2 {
+    font-size: 35px;
+    margin-bottom: 20px;
+}
+
+.lesson-content p {
+    color: #aab2c0;
+    line-height: 1.9;
+    margin-bottom: 20px;
+    white-space: pre-wrap;
+}
+
+.code-box {
+    background: #05070a;
+    border: 1px solid #1d2530;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.code-hidden {
+    color: #687385;
+    font-family: monospace;
+    letter-spacing: 2px;
+}
+
+.show-code {
+    background: white;
+    color: black;
+    border: 0;
+    border-radius: 7px;
+    padding: 9px 13px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* SITES */
+
+.sites-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.site-card {
+    border: 1px solid var(--border);
+    background: var(--panel);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.site-preview {
+    height: 160px;
+    background: linear-gradient(135deg, #151c28, #080b10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #566071;
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.site-info {
+    padding: 20px;
+}
+
+.site-info p {
+    color: var(--muted);
+    margin-top: 7px;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.site-link {
+    display: inline-block;
+    margin-top: 15px;
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    border: 1px solid var(--border);
+    padding: 8px 12px;
+    border-radius: 7px;
+}
+
+/* FORMULAIRES */
+
+input,
+textarea,
+select {
+    width: 100%;
+    background: #080b10;
+    border: 1px solid var(--border);
+    color: white;
+    padding: 13px;
+    border-radius: 8px;
+    margin: 8px 0 15px;
+    outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #4a566b;
+}
+
+textarea {
+    min-height: 230px;
+    resize: vertical;
+}
+
+label {
+    color: #aab2c0;
+    font-size: 13px;
+}
+
+/* LOGIN */
+
+.login-box {
+    width: min(430px, 90%);
+    margin: 90px auto;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 35px;
+}
+
+.login-box p {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 10px 0 25px;
+}
+
+/* NEV4 */
+
+.nev4-box {
+    width: min(700px, 90%);
+    margin: 80px auto;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 35px;
+}
+
+.admin-panel {
+    display: none;
+}
+
+.admin-panel.visible {
+    display: block;
+}
+
+.nev4-list {
+    margin-top: 25px;
+}
+
+.nev4-publication {
+    background: #080b10;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.nev4-publication-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.nev4-publication-type {
+    color: var(--green);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.nev4-publication-actions {
+    margin-top: 12px;
+}
+
+/* COMMUNAUTÉ */
+
+.community-form {
+    max-width: 700px;
+    margin: 30px auto 45px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 30px;
+}
+
+.community-message {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 12px;
+}
+
+.community-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.community-user {
+    font-weight: 700;
+}
+
+.community-date {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.community-text {
+    color: #aab2c0;
+    line-height: 1.7;
+    margin-top: 10px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.admin-message-text {
+    color: var(--muted);
+    margin-top: 8px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+/* FOOTER */
+
+footer {
+    border-top: 1px solid var(--border);
+    min-height: 150px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 25px;
+    color: #4f5968;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width: 900px) {
+
+    nav button {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .lesson-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: static;
+    }
+
+    .sites-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width: 600px) {
+
+    header {
+        padding: 0 4%;
+    }
+
+    nav {
+        display: none;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+    }
+
+    .lesson-content {
+        padding: 25px;
+    }
+
+    .community-header {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        NEV4
+    </div>
+
+    <nav>
+
+        <button class="active" onclick="showPage('home', this)">
+            Accueil
+        </button>
+
+        <button onclick="showPage('lessons', this)">
+            Leçons
+        </button>
+
+        <button onclick="showPage('sites', this)">
+            Sites web
+        </button>
+
+        <button onclick="showPage('community', this)">
+            Communauté
+        </button>
+
+        <button onclick="showPage('nev4', this)">
+            NEV4
+        </button>
+
+    </nav>
+
+    <button class="profile-btn" onclick="showPage('login')">
+        Connexion
+    </button>
+
+</header>
+
+
+<!-- ACCUEIL -->
+
+<div id="home" class="page active">
+
+    <div class="hero">
+
+        <div class="hero-content">
+
+            <div class="badge">
+                APPRENDRE • CRÉER • PROGRESSER
+            </div>
+
+            <h1>
+                Apprends à<br>
+                <span class="gradient">coder.</span>
+            </h1>
+
+            <p>
+                NEV4 est une plateforme pensée pour apprendre
+                l'informatique, découvrir les langages et créer
+                ses propres projets web.
+            </p>
+
+            <div class="hero-buttons">
+
+                <button class="btn" onclick="showPage('lessons')">
+                    Commencer à apprendre
+                </button>
+
+                <button class="btn secondary" onclick="showPage('community')">
+                    Rejoindre la communauté
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <section>
+
+        <div class="container">
+
+            <h2 class="section-title">
+                Choisis ton langage
+            </h2>
+
+            <p class="section-subtitle">
+                Des parcours progressifs pour commencer de zéro.
+            </p>
+
+            <div class="cards">
+
+                <div class="card" onclick="openLanguage('HTML')">
+                    <div class="card-icon">H</div>
+                    <h3>HTML</h3>
+                    <p>
+                        Apprends à construire la structure
+                        d'une page web.
+                    </p>
+                </div>
+
+                <div class="card" onclick="openLanguage('CSS')">
+                    <div class="card-icon">C</div>
+                    <h3>CSS</h3>
+                    <p>
+                        Donne du style et une vraie identité
+                        à tes sites.
+                    </p>
+                </div>
+
+                <div class="card" onclick="openLanguage('JavaScript')">
+                    <div class="card-icon">JS</div>
+                    <h3>JavaScript</h3>
+                    <p>
+                        Ajoute des interactions et rends
+                        tes pages dynamiques.
+                    </p>
+                </div>
+
+                <div class="card" onclick="openLanguage('Python')">
+                    <div class="card-icon">Py</div>
+                    <h3>Python</h3>
+                    <p>
+                        Découvre la programmation et
+                        l'automatisation.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- LEÇONS -->
+
+<div id="lessons" class="page">
+
+    <div class="container">
+
+        <div class="lesson-layout">
+
+            <aside class="sidebar">
+
+                <!-- Aucun HTML ici -->
+
+                <button class="lesson-btn selected" onclick="loadLesson(1, this)">
+                    01 — Introduction
+                </button>
+
+                <button class="lesson-btn" onclick="loadLesson(2, this)">
+                    02 — Structure
+                </button>
+
+                <button class="lesson-btn" onclick="loadLesson(3, this)">
+                    03 — Titres & textes
+                </button>
+
+                <button class="lesson-btn" onclick="loadLesson(4, this)">
+                    04 — Images
+                </button>
+
+                <button class="lesson-btn" onclick="loadLesson(5, this)">
+                    05 — Liens
+                </button>
+
+                <button class="lesson-btn" onclick="loadLesson(6, this)">
+                    06 — Listes
+                </button>
+
+                <button class="lesson-btn" onclick="loadLesson(7, this)">
+                    07 — Formulaires
+                </button>
+
+                <button class="lesson-btn" onclick="loadLesson(8, this)">
+                    08 — Organisation
+                </button>
+
+                <button class="lesson-btn" onclick="loadLesson(9, this)">
+                    09 — Projet
+                </button>
+
+                <button class="lesson-btn" onclick="loadLesson(10, this)">
+                    10 — Projet final
+                </button>
+
+                <div id="publishedLessons"></div>
+
+            </aside>
+
+
+            <main class="lesson-content">
+
+                <div id="lessonNumber" class="lesson-number">
+                    LEÇON 01
+                </div>
+
+                <h2 id="lessonTitle">
+                    Découvrir le HTML
+                </h2>
+
+                <p id="lessonText">
+                    HTML permet de créer la structure d'une page web.
+                </p>
+
+                <p id="lessonExtra">
+                    Une page web peut être comparée à une maison.
+                    HTML représente sa structure.
+                </p>
+
+                <div class="code-box">
+
+                    <span class="code-hidden">
+                        • • • • • • • • • • • •
+                    </span>
+
+                    <button class="show-code" onclick="askCode()">
+                        Afficher le code
+                    </button>
+
+                </div>
+
+            </main>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- SITES WEB -->
+
+<div id="sites" class="page">
+
+    <section>
+
+        <div class="container">
+
+            <h2 class="section-title">
+                Sites web
+            </h2>
+
+            <p class="section-subtitle">
+                Les sites publiés sur NEV4.
+            </p>
+
+            <div id="publishedSites" class="sites-grid"></div>
+
+            <p id="noSites" style="color:var(--muted);margin-top:30px;">
+                Aucun site web publié pour le moment.
+            </p>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- COMMUNAUTÉ -->
+
+<div id="community" class="page">
+
+    <section>
+
+        <div class="container">
+
+            <h2 class="section-title">
+                Communauté
+            </h2>
+
+            <p class="section-subtitle">
+                Partage une idée, un conseil, un projet
+                ou un message avec la communauté NEV4.
+            </p>
+
+            <div class="community-form">
+
+                <label>Pseudo</label>
+
+                <input
+                    id="communityUsername"
+                    type="text"
+                    maxlength="30"
+                    placeholder="Ton pseudo">
+
+                <label>Message</label>
+
+                <textarea
+                    id="communityMessage"
+                    maxlength="500"
+                    placeholder="Écris ton message..."></textarea>
+
+                <button class="btn" onclick="publishCommunityMessage()">
+                    Publier
+                </button>
+
+            </div>
+
+            <div id="communityMessages"></div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<!-- CONNEXION -->
+
+<div id="login" class="page">
+
+    <div class="login-box">
+
+        <h2>
+            Connexion
+        </h2>
+
+        <p>
+            Connecte-toi pour sauvegarder ton pseudo.
+        </p>
+
+        <label>Pseudo</label>
+
+        <input
+            id="username"
+            type="text"
+            placeholder="Ton pseudo">
+
+        <button
+            class="btn"
+            style="width:100%;"
+            onclick="login()">
+
+            Se connecter
+
+        </button>
+
+        <button
+            class="btn secondary"
+            style="width:100%;margin-top:10px;"
+            onclick="continueWithoutAccount()">
+
+            Continuer sans compte
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- NEV4 ADMIN -->
+
+<div id="nev4" class="page">
+
+    <div class="nev4-box">
+
+        <!-- CONNEXION NEV4 -->
+
+        <div id="nev4Login">
+
+            <h2>
+                NEV4
+            </h2>
+
+            <p style="color:var(--muted);margin:10px 0 25px;">
+                Espace de gestion NEV4.
+            </p>
+
+            <label>
+                Code NEV4
+            </label>
+
+            <input
+                type="password"
+                id="adminCode"
+                placeholder="Code NEV4"
+                onkeydown="if(event.key === 'Enter') unlockNev4();">
+
+            <button class="btn" onclick="unlockNev4()">
+                Accéder
+            </button>
+
+        </div>
+
+
+        <!-- PANEL ADMIN -->
+
+        <div id="nev4Panel" class="admin-panel">
+
+            <h2>
+                Gestion NEV4
+            </h2>
+
+            <p style="color:var(--muted);margin:10px 0 30px;">
+                Crée, publie et modère le contenu.
+            </p>
+
+
+            <!-- PUBLICATIONS -->
+
+            <h3>
+                Nouvelle publication
+            </h3>
+
+            <br>
+
+            <label>
+                Type de publication
+            </label>
+
+            <select id="publicationType">
+
+                <option value="lesson">
+                    Leçon
+                </option>
+
+                <option value="site">
+                    Site web
+                </option>
+
+            </select>
+
+            <label>
+                Titre
+            </label>
+
+            <input
+                id="publicationTitle"
+                type="text"
+                maxlength="100"
+                placeholder="Titre">
+
+            <label>
+                Contenu
+            </label>
+
+            <textarea
+                id="publicationContent"
+                maxlength="5000"
+                placeholder="Contenu de la publication..."></textarea>
+
+            <label>
+                Adresse du site
+            </label>
+
+            <input
+                id="publicationUrl"
+                type="text"
+                placeholder="https://exemple.com">
+
+            <button class="btn" onclick="publishContent()">
+                Publier
+            </button>
+
+
+            <hr style="border-color:var(--border);margin:35px 0;">
+
+
+            <!-- PUBLICATIONS EXISTANTES -->
+
+            <h3>
+                Publications existantes
+            </h3>
+
+            <div
+                id="adminPublications"
+                class="nev4-list">
+            </div>
+
+            <button
+                class="btn danger"
+                style="margin-top:15px;"
+                onclick="deleteAllPublications()">
+
+                Supprimer toutes les publications
+
+            </button>
+
+
+            <hr style="border-color:var(--border);margin:35px 0;">
+
+
+            <!-- MODÉRATION COMMUNAUTÉ -->
+
+            <h3>
+                Modération de la communauté
+            </h3>
+
+            <p style="color:var(--muted);margin-top:8px;">
+                Supprime ici les messages qui ne doivent plus
+                apparaître dans la communauté.
+            </p>
+
+            <div
+                id="adminCommunityMessages"
+                class="nev4-list">
+            </div>
+
+            <button
+                class="btn danger"
+                style="margin-top:15px;"
+                onclick="deleteAllCommunityMessages()">
+
+                Supprimer tous les messages
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<footer>
+    BY MARLEY
+</footer>
+
+
+<script>
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function showPage(pageId, button = null) {
+
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
+    });
+
+    const page = document.getElementById(pageId);
+
+    if (page) {
+        page.classList.add("active");
+    }
+
+    document.querySelectorAll("nav button").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    if (button) {
+        button.classList.add("active");
+    }
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* =========================
+   LANGAGES
+========================= */
+
+function openLanguage(language) {
+
+    showPage("lessons");
+
+    document.getElementById("lessonNumber").textContent =
+        "PARCOURS " + language;
+
+    document.getElementById("lessonTitle").textContent =
+        language + " — parcours débutant";
+
+    document.getElementById("lessonText").textContent =
+        "Bienvenue dans le parcours " +
+        language +
+        ". Commence par les bases et progresse étape par étape.";
+
+    document.getElementById("lessonExtra").textContent =
+        "NEV4 te permet de découvrir " +
+        language +
+        " et de créer progressivement tes propres projets.";
+}
+
+
+/* =========================
+   LEÇONS
+========================= */
+
+const lessons = {
+
+    1: [
+        "Découvrir le HTML",
+        "HTML permet de créer la structure d'une page web. C'est l'une des premières technologies à apprendre lorsqu'on commence le développement web."
+    ],
+
+    2: [
+        "Comprendre la structure",
+        "Une page HTML possède une organisation précise. Le navigateur lit cette structure afin de savoir quoi afficher à l'écran."
+    ],
+
+    3: [
+        "Titres et textes",
+        "Les titres permettent d'organiser les informations et les paragraphes permettent de présenter du contenu de manière claire."
+    ],
+
+    4: [
+        "Ajouter des images",
+        "Les images permettent d'améliorer une page et de présenter des informations visuelles aux visiteurs."
+    ],
+
+    5: [
+        "Créer des liens",
+        "Les liens permettent de naviguer entre différentes pages ou d'envoyer l'utilisateur vers une autre destination."
+    ],
+
+    6: [
+        "Créer des listes",
+        "Les listes permettent d'organiser plusieurs informations sous forme d'éléments faciles à lire."
+    ],
+
+    7: [
+        "Les formulaires",
+        "Les formulaires permettent de récupérer des informations saisies par les visiteurs."
+    ],
+
+    8: [
+        "Organiser son projet",
+        "Un bon projet doit être organisé. Séparer correctement les différentes parties rend le code plus simple à comprendre."
+    ],
+
+    9: [
+        "Créer son premier projet",
+        "Maintenant que tu connais les bases, tu peux commencer à construire un petit site complet."
+    ],
+
+    10: [
+        "Projet final",
+        "Le projet final consiste à réunir les connaissances apprises pendant les neuf premières leçons pour construire un véritable site."
+    ]
+
+};
+
+
+function loadLesson(number, button) {
+
+    document.querySelectorAll(".lesson-btn").forEach(btn => {
+        btn.classList.remove("selected");
+    });
+
+    button.classList.add("selected");
+
+    document.getElementById("lessonNumber").textContent =
+        "LEÇON " + String(number).padStart(2, "0");
+
+    document.getElementById("lessonTitle").textContent =
+        lessons[number][0];
+
+    document.getElementById("lessonText").textContent =
+        lessons[number][1];
+
+    document.getElementById("lessonExtra").textContent =
+        "Cette leçon fait partie du parcours de NEV4.";
+}
+
+
+/* =========================
+   PUBLICATIONS
+========================= */
+
+function getPublications() {
+
+    try {
+        return JSON.parse(
+            localStorage.getItem("nev4_publications")
+        ) || [];
+    } catch {
+        return [];
+    }
+}
+
+
+function savePublications(publications) {
+
+    localStorage.setItem(
+        "nev4_publications",
+        JSON.stringify(publications)
+    );
+}
+
+
+function publishContent() {
+
+    const type =
+        document.getElementById("publicationType").value;
+
+    const title =
+        document.getElementById("publicationTitle").value.trim();
+
+    const content =
+        document.getElementById("publicationContent").value.trim();
+
+    const url =
+        document.getElementById("publicationUrl").value.trim();
+
+
+    if (!title) {
+        alert("Entre un titre.");
+        return;
+    }
+
+    if (!content) {
+        alert("Entre un contenu.");
+        return;
+    }
+
+    if (
+        type === "site" &&
+        url &&
+        !/^https?:\/\//i.test(url)
+    ) {
+        alert("L'adresse doit commencer par http:// ou https://");
+        return;
+    }
+
+
+    const publications = getPublications();
+
+    publications.push({
+
+        id: Date.now(),
+
+        type: type,
+
+        title: title,
+
+        content: content,
+
+        url: url,
+
+        createdAt: Date.now()
+
+    });
+
+
+    savePublications(publications);
+
+
+    document.getElementById("publicationTitle").value = "";
+    document.getElementById("publicationContent").value = "";
+    document.getElementById("publicationUrl").value = "";
+
+
+    renderAllPublications();
+
+    alert("Publication ajoutée avec succès !");
+}
+
+
+/* =========================
+   LEÇONS PUBLIÉES
+========================= */
+
+function renderPublishedLessons() {
+
+    const container =
+        document.getElementById("publishedLessons");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    const lessonsPublished =
+        getPublications().filter(
+            publication => publication.type === "lesson"
+        );
+
+
+    if (lessonsPublished.length > 0) {
+
+        const title =
+            document.createElement("div");
+
+        title.className = "published-title";
+        title.textContent = "LEÇONS PUBLIÉES";
+
+        container.appendChild(title);
+    }
+
+
+    lessonsPublished.forEach((lesson, index) => {
+
+        const button =
+            document.createElement("button");
+
+        button.className = "lesson-btn";
+
+        button.textContent =
+            String(index + 11).padStart(2, "0") +
+            " — " +
+            lesson.title;
+
+
+        button.onclick = function() {
+
+            document.querySelectorAll(".lesson-btn").forEach(btn => {
+                btn.classList.remove("selected");
+            });
+
+            button.classList.add("selected");
+
+            document.getElementById("lessonNumber").textContent =
+                "LEÇON " + String(index + 11).padStart(2, "0");
+
+            document.getElementById("lessonTitle").textContent =
+                lesson.title;
+
+            document.getElementById("lessonText").textContent =
+                lesson.content;
+
+            document.getElementById("lessonExtra").textContent =
+                "Leçon publiée sur NEV4.";
+        };
+
+
+        container.appendChild(button);
+
+    });
+
+}
+
+
+/* =========================
+   SITES PUBLIÉS
+========================= */
+
+function renderPublishedSites() {
+
+    const container =
+        document.getElementById("publishedSites");
+
+    const noSites =
+        document.getElementById("noSites");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+
+    const sites =
+        getPublications().filter(
+            publication => publication.type === "site"
+        );
+
+
+    if (sites.length === 0) {
+
+        noSites.style.display = "block";
+
+        return;
+    }
+
+
+    noSites.style.display = "none";
+
+
+    sites.forEach(site => {
+
+        const card =
+            document.createElement("div");
+
+        card.className = "site-card";
+
+
+        const preview =
+            document.createElement("div");
+
+        preview.className = "site-preview";
+        preview.textContent = "NEV4";
+
+
+        const info =
+            document.createElement("div");
+
+        info.className = "site-info";
+
+
+        const title =
+            document.createElement("h3");
+
+        title.textContent = site.title;
+
+
+        const description =
+            document.createElement("p");
+
+        description.textContent = site.content;
+
+
+        info.appendChild(title);
+        info.appendChild(description);
+
+
+        if (site.url) {
+
+            const link =
+                document.createElement("a");
+
+            link.className = "site-link";
+            link.href = site.url;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = "Ouvrir le site";
+
+            info.appendChild(link);
+        }
+
+
+        card.appendChild(preview);
+        card.appendChild(info);
+
+        container.appendChild(card);
+
+    });
+
+}
+
+
+/* =========================
+   ADMIN PUBLICATIONS
+========================= */
+
+function renderAdminPublications() {
+
+    const container =
+        document.getElementById("adminPublications");
+
+    if (!container) return;
+
+    container.innerHTML = "";
+
+
+    const publications =
+        getPublications();
+
+
+    if (publications.length === 0) {
+
+        container.innerHTML =
+            '<p style="color:var(--muted)">Aucune publication.</p>';
+
+        return;
+    }
+
+
+    publications.forEach(publication => {
+
+        const box =
+            document.createElement("div");
+
+        box.className = "nev4-publication";
+
+
+        const type =
+            document.createElement("div");
+
+        type.className = "nev4-publication-type";
+
+        type.textContent =
+            publication.type === "lesson"
+                ? "Leçon"
+                : "Site web";
+
+
+        const title =
+            document.createElement("div");
+
+        title.className = "nev4-publication-title";
+
+        title.textContent = publication.title;
+
+
+        const actions =
+            document.createElement("div");
+
+        actions.className = "nev4-publication-actions";
+
+
+        const deleteButton =
+            document.createElement("button");
+
+        deleteButton.className = "btn danger";
+
+        deleteButton.textContent = "Supprimer";
+
+
+        deleteButton.onclick = function() {
+            deletePublication(publication.id);
+        };
+
+
+        actions.appendChild(deleteButton);
+
+        box.appendChild(type);
+        box.appendChild(title);
+        box.appendChild(actions);
+
+        container.appendChild(box);
+
+    });
+
+}
+
+
+function deletePublication(id) {
+
+    if (!confirm("Supprimer cette publication ?")) {
+        return;
+    }
+
+
+    let publications =
+        getPublications();
+
+
+    publications =
+        publications.filter(
+            publication => publication.id !== id
+        );
+
+
+    savePublications(publications);
+
+    renderAllPublications();
+}
+
+
+function deleteAllPublications() {
+
+    if (!confirm("Supprimer toutes les publications ?")) {
+        return;
+    }
+
+
+    localStorage.removeItem("nev4_publications");
+
+    renderAllPublications();
+
+    alert("Toutes les publications ont été supprimées.");
+}
+
+
+/* =========================
+   CODE NEV4
+========================= */
+
+function unlockNev4() {
+
+    const code =
+        document.getElementById("adminCode").value;
+
+
+    if (code === "0927382973") {
+
+        document.getElementById("nev4Login").style.display = "none";
+
+        document.getElementById("nev4Panel")
+            .classList.add("visible");
+
+        document.getElementById("adminCode").value = "";
+
+        renderAllPublications();
+
+        alert("Accès NEV4 autorisé.");
+
+    } else {
+
+        alert("Code NEV4 incorrect.");
+
+    }
+}
+
+
+/* =========================
+   CODE DES LEÇONS
+========================= */
+
+function askCode() {
+
+    const password =
+        prompt(
+            "Entre le code NEV4 pour afficher la correction :"
+        );
+
+
+    if (password === "0927382973") {
+
+        alert("Correction autorisée.");
+
+    } else if (password !== null) {
+
+        alert("Code incorrect.");
+
+    }
+}
+
+
+/* =========================
+   CONNEXION
+========================= */
+
+function login() {
+
+    const username =
+        document.getElementById("username").value.trim();
+
+
+    if (!username) {
+
+        alert("Entre un pseudo.");
+
+        return;
+    }
+
+
+    localStorage.setItem(
+        "nev4_username",
+        username
+    );
+
+
+    document.getElementById(
+        "communityUsername"
+    ).value = username;
+
+
+    alert("Bienvenue " + username + " !");
+
+    showPage("lessons");
+}
+
+
+function continueWithoutAccount() {
+
+    localStorage.setItem(
+        "nev4_guest",
+        "true"
+    );
+
+    showPage("lessons");
+}
+
+
+/* =========================
+   COMMUNAUTÉ
+========================= */
+
+const forbiddenWords = [
+    "connard",
+    "connasse",
+    "pute",
+    "putain",
+    "salope",
+    "fdp",
+    "ntm",
+    "nique",
+    "niquer",
+    "encule",
+    "enculé",
+    "merde",
+    "batard",
+    "bâtard",
+    "abruti"
+];
+
+
+function normalizeText(text) {
+
+    return text
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+}
+
+
+function containsInsult(text) {
+
+    const clean =
+        normalizeText(text);
+
+    return forbiddenWords.some(word => {
+
+        return clean.includes(
+            normalizeText(word)
+        );
+
+    });
+
+}
+
+
+function getCommunityMessages() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                "nev4_community"
+            )
+        ) || [];
+
+    } catch {
+
+        return [];
+
+    }
+
+}
+
+
+function saveCommunityMessages(messages) {
+
+    localStorage.setItem(
+        "nev4_community",
+        JSON.stringify(messages)
+    );
+
+}
+
+
+/* =========================
+   PUBLIER MESSAGE
+========================= */
+
+function publishCommunityMessage() {
+
+    const username =
+        document.getElementById(
+            "communityUsername"
+        ).value.trim();
+
+
+    const message =
+        document.getElementById(
+            "communityMessage"
+        ).value.trim();
+
+
+    if (!username) {
+
+        alert("Entre ton pseudo.");
+
+        return;
+    }
+
+
+    if (!message) {
+
+        alert("Écris ton message.");
+
+        return;
+    }
+
+
+    if (
+        containsInsult(username) ||
+        containsInsult(message)
+    ) {
+
+        alert(
+            "Ton message contient un mot interdit."
+        );
+
+        return;
+    }
+
+
+    const messages =
+        getCommunityMessages();
+
+
+    messages.unshift({
+
+        id: Date.now(),
+
+        username: username,
+
+        message: message,
+
+        date: new Date().toLocaleString("fr-FR")
+
+    });
+
+
+    saveCommunityMessages(messages);
+
+
+    document.getElementById(
+        "communityMessage"
+    ).value = "";
+
+
+    renderCommunityMessages();
+    renderAdminCommunityMessages();
+
+}
+
+
+/* =========================
+   AFFICHER COMMUNAUTÉ
+========================= */
+
+function renderCommunityMessages() {
+
+    const container =
+        document.getElementById(
+            "communityMessages"
+        );
+
+
+    if (!container) return;
+
+
+    container.innerHTML = "";
+
+
+    const messages =
+        getCommunityMessages();
+
+
+    if (messages.length === 0) {
+
+        container.innerHTML =
+            '<p style="color:var(--muted)">Aucun message pour le moment.</p>';
+
+        return;
+    }
+
+
+    messages.forEach(messageData => {
+
+        const box =
+            document.createElement("div");
+
+        box.className = "community-message";
+
+
+        const header =
+            document.createElement("div");
+
+        header.className = "community-header";
+
+
+        const user =
+            document.createElement("span");
+
+        user.className = "community-user";
+
+        user.textContent =
+            messageData.username;
+
+
+        const date =
+            document.createElement("span");
+
+        date.className = "community-date";
+
+        date.textContent =
+            messageData.date;
+
+
+        header.appendChild(user);
+        header.appendChild(date);
+
+
+        const text =
+            document.createElement("p");
+
+        text.className = "community-text";
+
+        text.textContent =
+            messageData.message;
+
+
+        box.appendChild(header);
+        box.appendChild(text);
+
+
+        container.appendChild(box);
+
+    });
+
+}
+
+
+/* =========================
+   ADMIN — MESSAGES COMMUNAUTÉ
+========================= */
+
+function renderAdminCommunityMessages() {
+
+    const container =
+        document.getElementById(
+            "adminCommunityMessages"
+        );
+
+
+    if (!container) return;
+
+
+    container.innerHTML = "";
+
+
+    const messages =
+        getCommunityMessages();
+
+
+    if (messages.length === 0) {
+
+        container.innerHTML =
+            '<p style="color:var(--muted)">Aucun message dans la communauté.</p>';
+
+        return;
+    }
+
+
+    messages.forEach(messageData => {
+
+        const box =
+            document.createElement("div");
+
+        box.className =
+            "nev4-publication";
+
+
+        const type =
+            document.createElement("div");
+
+        type.className =
+            "nev4-publication-type";
+
+        type.textContent =
+            "Message communauté";
+
+
+        const username =
+            document.createElement("div");
+
+        username.className =
+            "nev4-publication-title";
+
+        username.textContent =
+            messageData.username;
+
+
+        const message =
+            document.createElement("p");
+
+        message.className =
+            "admin-message-text";
+
+        message.textContent =
+            messageData.message;
+
+
+        const date =
+            document.createElement("small");
+
+        date.style.color =
+            "#687385";
+
+        date.textContent =
+            messageData.date;
+
+
+        const actions =
+            document.createElement("div");
+
+        actions.className =
+            "nev4-publication-actions";
+
+
+        const deleteButton =
+            document.createElement("button");
+
+        deleteButton.className =
+            "btn danger";
+
+        deleteButton.textContent =
+            "Supprimer le message";
+
+
+        deleteButton.onclick = function() {
+
+            deleteCommunityMessage(
+                messageData.id
+            );
+
+        };
+
+
+        actions.appendChild(
+            deleteButton
+        );
+
+
+        box.appendChild(type);
+        box.appendChild(username);
+        box.appendChild(message);
+        box.appendChild(date);
+        box.appendChild(actions);
+
+
+        container.appendChild(box);
+
+    });
+
+}
+
+
+/* =========================
+   SUPPRIMER MESSAGE
+========================= */
+
+function deleteCommunityMessage(id) {
+
+    if (
+        !confirm(
+            "Supprimer ce message de la communauté ?"
+        )
+    ) {
+        return;
+    }
+
+
+    let messages =
+        getCommunityMessages();
+
+
+    messages =
+        messages.filter(
+            message => message.id !== id
+        );
+
+
+    saveCommunityMessages(messages);
+
+
+    renderCommunityMessages();
+    renderAdminCommunityMessages();
+
+}
+
+
+/* =========================
+   SUPPRIMER TOUS LES MESSAGES
+========================= */
+
+function deleteAllCommunityMessages() {
+
+    if (
+        !confirm(
+            "Supprimer TOUS les messages de la communauté ?"
+        )
+    ) {
+        return;
+    }
+
+
+    localStorage.removeItem(
+        "nev4_community"
+    );
+
+
+    renderCommunityMessages();
+    renderAdminCommunityMessages();
+
+
+    alert(
+        "Tous les messages ont été supprimés."
+    );
+
+}
+
+
+/* =========================
+   RENDU GLOBAL
+========================= */
+
+function renderAllPublications() {
+
+    renderPublishedLessons();
+
+    renderPublishedSites();
+
+    renderAdminPublications();
+
+    renderAdminCommunityMessages();
+
+}
+
+
+/* =========================
+   CHARGEMENT
+========================= */
+
+window.addEventListener("load", () => {
+
+    renderAllPublications();
+
+    renderCommunityMessages();
+
+
+    const savedUsername =
+        localStorage.getItem(
+            "nev4_username"
+        );
+
+
+    if (savedUsername) {
+
+        document.getElementById(
+            "username"
+        ).value = savedUsername;
+
+
+        document.getElementById(
+            "communityUsername"
+        ).value = savedUsername;
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
